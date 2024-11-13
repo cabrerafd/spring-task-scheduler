@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -27,6 +28,10 @@ public class Task {
 
     private Integer duration;
 
+    private Date startDate;
+
+    private Date endDate;
+
     @ManyToOne
     @JoinColumn(
             name = "project_plan_id"
@@ -40,4 +45,10 @@ public class Task {
             inverseJoinColumns = @JoinColumn(name = "dependent_task_id")
     )
     private List<Task> dependentTasks;
+
+    public boolean hasDependentTasks() {
+        if (dependentTasks == null) return false;
+
+        return !dependentTasks.isEmpty();
+    }
 }
