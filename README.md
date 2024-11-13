@@ -26,6 +26,17 @@ When the application stops, all data is deleted (no persistence).
 
 ## Endpoints
 Listed here are the endpoints of this application. There is also a postman collection and environment in the `postman` folder.
+
+- [Project Plans](#project-plans)
+  - [Get All Project Plans](#get-all-project-plans)
+  - [Get Project Plan By Id](#get-project-plan-by-id)
+  - [Create Project Plan](#create-project-plan)
+- [Tasks](#tasks)
+  - [Create Task](#create-task)
+  - [Get Task By Id](#get-task-by-id)
+  - [Update Task Status](#update-task-status)
+  - [Create Schedule](#create-schedule)
+
 ### Project Plans
 
 #### Get All Project Plans
