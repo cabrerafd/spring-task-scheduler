@@ -51,4 +51,12 @@ public class Task {
 
         return !dependentTasks.isEmpty();
     }
+
+    public boolean isCompleted() {
+        return status == TaskStatus.COMPLETED;
+    }
+
+    public List<Task> incompleteTasks() {
+        return dependentTasks.stream().filter(task -> !task.isCompleted()).toList();
+    }
 }

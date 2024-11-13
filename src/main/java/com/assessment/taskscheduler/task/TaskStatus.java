@@ -19,6 +19,13 @@ public enum TaskStatus {
         return taskStatus;
     }
 
+    public TaskStatus nextStatus() {
+        return switch (fromValue(taskStatus)) {
+            case ON_DECK -> IN_PROGRESS;
+            case IN_PROGRESS, COMPLETED -> COMPLETED;
+        };
+    }
+
     @JsonCreator
     public static TaskStatus fromValue(String value) {
         for (TaskStatus status: values()) {

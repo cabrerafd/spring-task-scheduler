@@ -33,4 +33,10 @@ public class TaskController {
     public ResponseEntity<List<TaskScheduleResponse>> scheduleTasks(@Valid @RequestBody List<TaskScheduleRequest> request) {
         return new ResponseEntity<>(service.scheduleTasks(request), HttpStatus.OK);
     }
+
+    @PostMapping("/{id}/update_status")
+    public ResponseEntity<TaskResponse> updateTaskStatus(@PathVariable String id) {
+        return new ResponseEntity<>(service.updateTaskStatus(id), HttpStatus.OK);
+    }
+
 }

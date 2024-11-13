@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,12 +29,6 @@ public class TaskService {
         });
 
         return responses;
-    }
-
-    private Task findTaskById(String id) {
-        return repository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException(String.format("Task with id %s not found.", id))
-        );
     }
 
     private List<TaskScheduleResponse> createScheduleList(List<Task> tasks, Date startDate) {
@@ -123,6 +118,41 @@ public class TaskService {
                 task.getEndDate(),
                 Collections.emptyList(),
                 projectPlan.getId()
+        );
+    }
+
+    public TaskResponse updateTaskStatus(String id) {
+        Task task = findTaskById(id);
+        TaskStatus status = task.getStatus();
+
+        if (task.isCompleted()) throw new IllegalStateException("Task is already completed");
+
+        if (!task.incompleteTasks().isEmpty()) {
+            throw new IllegalStateException(String.format(
+                    "Cannot start task since dependent task %s is/are not yet completed",
+                    task.incompleteTasks().stream().map(Task::getId).collect(Collectors.joining(", "))
+            ));
+        }
+
+        task.setStatus(status.nextStatus());
+
+        Task updatedTask = repository.save(task);
+
+        return new TaskResponse(
+                updatedTask.getId(),
+                updatedTask.getName(),
+                updatedTask.getStatus(),
+                updatedTask.getDuration(),
+                updatedTask.getStartDate(),
+                updatedTask.getEndDate(),
+                Collections.emptyList(),
+                updatedTask.getProjectPlan().getId()
+        );
+    }
+
+    private Task findTaskById(String id) {
+        return repository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException(String.format("Task with id %s not found.", id))
         );
     }
 }
