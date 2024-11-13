@@ -25,6 +25,8 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
+    private Integer duration;
+
     @ManyToOne
     @JoinColumn(
             name = "project_plan_id"
