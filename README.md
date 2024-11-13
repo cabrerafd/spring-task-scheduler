@@ -25,7 +25,7 @@ The database will be automatically seeded everytime the application starts.
 When the application stops, all data is deleted (no persistence).
 
 ## Endpoints
-
+Listed here are the endpoints of this application. There is also a postman collection and environment in the `postman` folder.
 ### Project Plans
 
 #### Get All Project Plans

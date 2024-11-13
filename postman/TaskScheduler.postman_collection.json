@@ -1,0 +1,227 @@
+{
+	"info": {
+		"_postman_id": "f327096f-3149-45a5-a7af-174c1131d0fc",
+		"name": "TaskScheduler",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8274367"
+	},
+	"item": [
+		{
+			"name": "Project Plans",
+			"item": [
+				{
+					"name": "Get All Project Plans",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/project_plans",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"project_plans"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Project Plan By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/project_plans/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"project_plans",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{project_plan_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Project Plan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.environment.set('project_plan_id', jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomCatchPhraseNoun}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/project_plans",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"project_plans"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "Create Task",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = JSON.parse(responseBody);\r",
+									"\r",
+									"pm.environment.set('task_id', jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"random_duration\", Math.floor(Math.random() * 9) + 1)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{$randomCatchPhraseNoun}}\",\r\n    \"duration\": \"{{random_duration}}\",\r\n    \"project_plan_id\": {{project_plan_id}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/tasks",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tasks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Task By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tasks/:id",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tasks",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{task_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Task Status",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tasks/:id/update_status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tasks",
+								":id",
+								"update_status"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{task_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Schedule",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    // {\r\n    //     \"id\": \"{{$randomUUID}}\"\r\n    // },\r\n    // {\r\n    //     \"id\": \"{{$randomUUID}}\"\r\n    // },\r\n    // {\r\n    //     \"id\": \"{{$randomUUID}}\"\r\n    // },\r\n    // {\r\n    //     \"id\": \"{{$randomUUID}}\"\r\n    // },\r\n    {\r\n        \"id\": \"64744526-0d1d-4ffe-ade3-6a43b244163c\"\r\n    }\r\n]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/tasks/schedule",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tasks",
+								"schedule"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
