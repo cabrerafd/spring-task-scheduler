@@ -1,5 +1,8 @@
 package com.assessment.taskscheduler.task;
 
+import com.assessment.taskscheduler.projectplan.ProjectPlan;
+import com.assessment.taskscheduler.projectplan.ProjectPlanService;
+import com.assessment.taskscheduler.task.dto.TaskCreateRequest;
 import com.assessment.taskscheduler.task.dto.TaskResponse;
 import com.assessment.taskscheduler.task.dto.TaskScheduleRequest;
 import com.assessment.taskscheduler.task.dto.TaskScheduleResponse;
@@ -7,16 +10,14 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class TaskService {
 
     private final TaskRepository repository;
+    private final ProjectPlanService projectPlanService;
 
     public List<TaskScheduleResponse> scheduleTasks(List<TaskScheduleRequest> request) {
         List<TaskScheduleResponse> responses = new ArrayList<>();
@@ -96,7 +97,32 @@ public class TaskService {
                 task.getDuration(),
                 task.getStartDate(),
                 task.getEndDate(),
-                dependentTaskIds
+                dependentTaskIds,
+                task.getProjectPlan().getId()
+        );
+    }
+
+    public TaskResponse createTask(TaskCreateRequest request) {
+        ProjectPlan projectPlan = projectPlanService.findProjectPlanById(request.projectPlanId());
+
+        Task task = repository.save(
+                Task.builder()
+                        .name(request.name())
+                        .duration(request.duration())
+                        .status(TaskStatus.ON_DECK)
+                        .projectPlan(projectPlan)
+                        .build()
+        );
+
+        return new TaskResponse(
+                task.getId(),
+                task.getName(),
+                task.getStatus(),
+                task.getDuration(),
+                task.getStartDate(),
+                task.getEndDate(),
+                Collections.emptyList(),
+                projectPlan.getId()
         );
     }
 }

@@ -43,7 +43,8 @@ public class ProjectPlanService {
                     task.getDuration(),
                     task.getStartDate(),
                     task.getEndDate(),
-                    dependentTaskIds
+                    dependentTaskIds,
+                    projectPlan.getId()
             );
         }).toList();
 
@@ -68,7 +69,7 @@ public class ProjectPlanService {
         );
     }
 
-    private ProjectPlan findProjectPlanById(String id) {
+    public ProjectPlan findProjectPlanById(String id) {
         return repository.findById(id).orElseThrow(() ->
             new EntityNotFoundException(String.format("Project plan with id %s not found", id))
         );

@@ -1,5 +1,6 @@
 package com.assessment.taskscheduler.task;
 
+import com.assessment.taskscheduler.task.dto.TaskCreateRequest;
 import com.assessment.taskscheduler.task.dto.TaskResponse;
 import com.assessment.taskscheduler.task.dto.TaskScheduleRequest;
 import com.assessment.taskscheduler.task.dto.TaskScheduleResponse;
@@ -24,6 +25,11 @@ public class TaskController {
     }
 
     @PostMapping
+    public ResponseEntity<TaskResponse> createTask(@Valid @RequestBody TaskCreateRequest request) {
+        return new ResponseEntity<>(service.createTask(request), HttpStatus.OK);
+    }
+
+    @PostMapping("/schedule")
     public ResponseEntity<List<TaskScheduleResponse>> scheduleTasks(@Valid @RequestBody List<TaskScheduleRequest> request) {
         return new ResponseEntity<>(service.scheduleTasks(request), HttpStatus.OK);
     }

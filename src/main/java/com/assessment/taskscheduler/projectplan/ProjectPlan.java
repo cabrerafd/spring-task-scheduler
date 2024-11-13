@@ -25,6 +25,7 @@ public class ProjectPlan {
 
     @OneToMany(
             mappedBy = "projectPlan",
+            cascade = CascadeType.ALL,
             fetch = FetchType.EAGER
     )
     private List<Task> tasks;

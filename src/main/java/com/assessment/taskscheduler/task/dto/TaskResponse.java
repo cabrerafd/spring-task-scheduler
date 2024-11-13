@@ -16,6 +16,8 @@ public record TaskResponse(
         @JsonProperty("end_date")
         Date endDate,
         @JsonProperty("dependent_task_ids")
-        List<String> dependentTaskIds
+        List<String> dependentTaskIds,
+        @JsonProperty("project_plan_id")
+        String projectPlanId
 ) {
 }
